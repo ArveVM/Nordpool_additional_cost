@@ -170,7 +170,17 @@ template:
 
 
 
-  # Tested combination of Country/Power-distributor:
-  
-  ## Norway
-  1. [Linja-Mørenett](https://static1.squarespace.com/static/61438478feca7941581468f1/t/64c773640c3b884d34be8a58/1690792804308/Tariffark+1.+juli+2023+-+hushald.pdf)
+# Tested combination of Country/Power-distributor:
+
+## Norway
+1. [Linja-Mørenett](https://static1.squarespace.com/static/61438478feca7941581468f1/t/64c773640c3b884d34be8a58/1690792804308/Tariffark+1.+juli+2023+-+hushald.pdf)
+
+draft:
+- https://github.com/erlendsellie/priceanalyzer/wiki/Additional-Costs
+- tensio-Nord: https://tn.tensio.no/nettleie-og-tilknytningsavtaler
+- Tensio-sør: https://ts.tensio.no/kunde/nettleie-priser-og-avtaler
+- Elvia helg/kveld vs dag: https://www.elvia.no/nettleie/alt-om-nettleiepriser/nettleiepriser-for-privatkunder/
+- Agder Energi: https://www.aenett.no/nettleie/tariffer/
+- lnett (lyse nett)  https://www.l-nett.no/nettleie/priser-og-vilkar-privat/
+
+- 
