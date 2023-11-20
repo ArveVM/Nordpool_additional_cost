@@ -42,7 +42,7 @@ Then the template provides some inputs (including power-broker-markup), and out 
 # Installation
 Install this in HACS or download the nordpool_additional_cost.jinja from this repository and place the files into your config\custom_templates directory.
 
-PS: you need to enable HACS-experimental features (to enable downloading templates) and then select "template" when adding repository.
+PS: you need to enable [HACS-experimental](https://experimental.hacs.xyz/docs/faq/experimental_features/) features (to enable downloading templates) and then select "template" when adding repository.
   
 <br />
 
