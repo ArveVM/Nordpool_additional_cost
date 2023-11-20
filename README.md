@@ -43,6 +43,13 @@ Then the template provides some inputs (including power-broker-markup), and out 
 Install this in HACS or download the nordpool_additional_cost.jinja from this repository and place the files into your config\custom_templates directory.
 
 PS: you need to enable [HACS-experimental](https://experimental.hacs.xyz/docs/faq/experimental_features/) features (to enable downloading templates) and then select "template" when adding repository.
+
+### Updates 
+
+
+### Refresh template: 
+<img width="281" alt="image" src="https://github.com/ArveVM/nordpool_additional_cost/assets/96014323/b0bbcdb9-7168-474c-8682-b1e92863deb5">
+
   
 <br />
 
