@@ -1,5 +1,5 @@
-# Nordpool 'additional_costs'
-Templating tool to assist integrations: Nordpool or Priceanalyzer
+# Nordpool 'additional_cost'
+Templating tool to assist the two integrations fetching Nordpool-spot prices; Nordpool and Priceanalyzer
 
 ## Tired of updating additional_costs every time your power-company or government changes some minor parameters?
 
