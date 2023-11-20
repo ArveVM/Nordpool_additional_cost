@@ -165,15 +165,12 @@ template:
 <br />
 
 
-
-
-
-
-
 # Tested combination of Country/Power-distributor:
 
 ## Norway
 1. [Linja-Mørenett](https://static1.squarespace.com/static/61438478feca7941581468f1/t/64c773640c3b884d34be8a58/1690792804308/Tariffark+1.+juli+2023+-+hushald.pdf)
+
+<br />
 
 draft:
 - https://github.com/erlendsellie/priceanalyzer/wiki/Additional-Costs
