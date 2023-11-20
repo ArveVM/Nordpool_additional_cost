@@ -4,7 +4,11 @@
 # Nordpool 'additional_cost'
 Tired of calculating/changing templates for Nordpool-spot price additional cost? Look no further. This Template extension for home assistant makes additional_cost calculations easy!
 
-By updating the correct data in this repository and updating it through HACS, my goal is that we don't have to individually update addtional_cost in our HA-instances -> one should only use HACAS to update to the last version of this template!
+By updating the correct data in this repository and updating to your HA through HACS, my goal is that we don't have to individually update addtional_cost in our HA-instances -> one should only use HACAS to update to the last version of this template!
+
+### Inspiration
+Petro31's [easy-time-jinja](https://github.com/Petro31/easy-time-jinja)
+Kemon - github-wizardry :)
 
 <br />
 
@@ -30,18 +34,22 @@ outputs for test/verification or to use in other sensors/calculations
 32. price for tarnsport, broker and subsidized spot
 
 <br />
+
 # Requirements
-1. Must have Nordpool or Priceanalyzer installed, both use same method of adding additional_Cost so they can piggyback on the cost-calculation this template (hopfully) can provide
+1. Must have Nordpool or Priceanalyzer installed, both use same method of adding additional_cost so they can piggyback on the cost-calculation this template (hopfully) can provide
 2. HACS to get updates
 3. Community focus on updating
    - There are many different countrys with separate cost-structures, and
 
 <br />
+
 # Installation
 Install this in HACS or download the nordpool_additional_cost.jinja from this repository and place the files into your config\custom_templates directory.
+
 PS: you need to enable HACS-experimental features (to enable downloading templates) and then select "template" when adding repository.
   
 <br />
+
 # How to use:
 
 Create a Priceanalyzer or a Nordpool-sensor with the following as additional cost
