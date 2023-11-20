@@ -46,7 +46,7 @@ Create a Priceanalyzer or a Nordpool-sensor with the following as additional cos
 {% set curr_month = now().month %}
 {% set curr_price = current_price %}
 {% from 'nordpool_additional_cost.jinja' import SpotTest %} 
-{{ SpotTest(
+{{ add_cost(
     curr_hour,
     curr_month,
     0.029|float/1.25,
@@ -69,7 +69,7 @@ add this code in SDevelopment tools / template, and you will get the return-valu
 {% set curr_month = now().month %}
 {% set curr_price = current_price %}
 {% from 'nordpool_additional_cost.jinja' import SpotTest %} 
-{{ SpotTest(
+{{ add_cost(
     curr_hour,
     curr_month,
     0.029|float/1.25,
