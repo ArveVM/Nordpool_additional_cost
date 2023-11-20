@@ -1,23 +1,17 @@
-[![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/custom-components/hacs)
-![Version](https://img.shields.io/github/v/release/ArveVM/nordpool_additiona_cost)
-
+[![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs)
+![Version](https://img.shields.io/github/v/release/ArveVM/nordpool_additional_cost)
 
 # Nordpool 'additional_cost'
-Templating tool to assist the two integrations fetching Nordpool-spot prices; [Nordpool](https://github.com/custom-components/nordpool) and [Priceanalyzer](https://github.com/erlendsellie/priceanalyzer)
+Tired of calculating/changing templates for Nordpool-spot price additional cost? Look no further. This Template extension for home assistant makes additional_cost calculations easy!
 
-## Tired of updating additional_costs every time your power-company or government changes some minor parameters?
+By updating the correct data in this repository and updating it through HACS, my goal is that we don't have to individually update addtional_cost in our HA-instances -> one should only use HACAS to update to the last version of this template!
 
-Nordpool spot-prices can be fetched to HA with two integrations; Nordpool and Priceanalyzer.
-Both of them have the ability to add 'additional_cost' to the spot price
-
+<br />
+## Concept
+Two HA-integrations fetch Nordpool-spot prices; [Nordpool](https://github.com/custom-components/nordpool) and [Priceanalyzer](https://github.com/erlendsellie/priceanalyzer). To that price there come additional costs, which contains many components that constantly seem to change :(
 So when a number of state fees and power subsidy constantly cange, power transport company have night/day tarrifs, and power-broker-company change their markup,, how do you keep the actual total power-cost pr hour in your future planning?
 
-
-By updating the correct data in this repository and updating it through HACS, my goal is that we don't have to individually update addtional_cost in our HA-instances
-
-
-## Concept
-The entire community gather and create a good template which is updated with 
+We use this template to gather and create a good template which is updated with: 
 - country level fees/subsidies
 - power distributor fees/subsidies
 Then the template provides some inputs (including power-broker-markup), and out you get the full price you have to pay each hour (including next-day price)
@@ -34,13 +28,19 @@ outputs for test/verification or to use in other sensors/calculations
 31. transport and broker
 32. price for tarnsport, broker and subsidized spot
 
-
+<br />
 # Requirements
 1. Must have Nordpool or Priceanalyzer installed, both use same method of adding additional_Cost so they can piggyback on the cost-calculation this template (hopfully) can provide
 2. HACS to get updates
 3. Community focus on updating
    - There are many different countrys with separate cost-structures, and
+
+<br />
+# Installation
+Install this in HACS or download the nordpool_additional_cost.jinja from this repository and place the files into your config\custom_templates directory.
+PS: you need to enable HACS-experimental features (to enable downloading templates) and then select "template" when adding repository.
   
+<br />
 # How to use:
 
 Create a Priceanalyzer or a Nordpool-sensor with the following as additional cost
