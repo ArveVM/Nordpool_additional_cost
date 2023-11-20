@@ -12,6 +12,11 @@ Kemon - github-wizardry :)
 
 <br />
 
+### Disclaimer
+This is a community concept,, under no cercomstanceas can I take responsability for not updated templates or wrong calculations. If you are worried - make a fork and create your own - or just close the browser and find anonther solution ;)
+
+<br />
+
 ## Concept
 Two HA-integrations fetch Nordpool-spot prices; [Nordpool](https://github.com/custom-components/nordpool) and [Priceanalyzer](https://github.com/erlendsellie/priceanalyzer). On top of that price there come additional costs, which contains many components that constantly seem to change :(
 So when a number of state fees and power subsidy constantly cange, power transport company have night/day tarrifs that often change, and power-broker-company change their markup,, how do you keep the actual total power-cost pr hour in your future planning?
