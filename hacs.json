@@ -1,6 +1,6 @@
 {
-  "name": "Easy Time",
-  "filename": "easy_time.jinja",
+  "name": "Nordpool addtitional_cost",
+  "filename": "nordpool_additional_cost.jinja",
   "homeassistant": "2023.4.0",
   "render_readme": true
 }
