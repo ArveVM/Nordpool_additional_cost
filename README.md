@@ -10,12 +10,37 @@ By updating the correct data in this repository and updating it through HACS, my
 3. Community focus on updating
    - There are many different countrys with separate cost-structures, and
   
+# Functions
+1. 
 
 # How to use:
 
 Create a Priceanalyzer or a Nordpool-sensor with the following as additional cost
 (select the last variable as the "function" you want to return
 ```
+{% set curr_hour = now().hour %}
+{% set curr_month = now().month %}
+{% set curr_price = current_price %}
+{% from 'nordpool_additional_cost.jinja' import SpotTest %} 
+{{ SpotTest(
+    curr_hour,
+    curr_month,
+    0.029|float/1.25,
+    curr_price,
+    true,
+    2
+    )}}
+```
+
+
+# How to test:
+
+Create a Priceanalyzer or a Nordpool-sensor with nothing as additional cost
+Then adjust first line in sample-template to the name of your sensor
+(select the last variable as the "function" you want to return
+add this code in SDevelopment tools / template, and you will get the return-value of the function you have specified.
+```
+{% set current_price = (states('sensor.nordpool')|float) %}
 {% set curr_hour = now().hour %}
 {% set curr_month = now().month %}
 {% set curr_price = current_price %}
