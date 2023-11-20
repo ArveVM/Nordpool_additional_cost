@@ -12,15 +12,22 @@ By updating the correct data in this repository and updating it through HACS, my
   
 
 # How to use:
+
+Create a Priceanalyzer or a Nordpool-sensor with the following as additional cost
+(select the last variable as the "function" you want to return
 ```
-{% from 'easy_time.jinja' import clock_icon %}
-
-{# Return the current time icon #}
-{{ clock_icon() }}
-
-{# Return midnight or noon's current time icon #}
-{{ clock_icon(0) }}
-{{ clock_icon(12) }}
+{% set curr_hour = now().hour %}
+{% set curr_month = now().month %}
+{% set curr_price = current_price %}
+{% from 'nordpool_additional_cost.jinja' import SpotTest %} 
+{{ SpotTest(
+    curr_hour,
+    curr_month,
+    0.029|float/1.25,
+    curr_price,
+    true,
+    2
+    )}}
 ```
 
 
