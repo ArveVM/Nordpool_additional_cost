@@ -172,7 +172,11 @@ template:
 
 <br />
 
+
 draft:
+- https://www.nve.no/reguleringsmyndigheten/kunde/nett/nettleie/
+- https://github.com/martinju/stromstotte/blob/master/data/database_nettleie_simple.csv
+- 
 - https://github.com/erlendsellie/priceanalyzer/wiki/Additional-Costs
 - tensio-Nord: https://tn.tensio.no/nettleie-og-tilknytningsavtaler
 - Tensio-sør: https://ts.tensio.no/kunde/nettleie-priser-og-avtaler
