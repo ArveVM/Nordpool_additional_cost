@@ -1,20 +1,17 @@
-{# _ _ _ First set some country related settings: #}
+{# _ _ _ First set some country related settings:  #}
+
+{# _ _ Norway: #}
 {% set n = {
-    "elavgift_incl_vat":     0.1980,
-    "enova_incl_vat":        0.0125,
-    "vat_percent":           25
+    "elavgift_incl_vat":                 0.1980,
+    "enova_incl_vat":                    0.0125,
+    "vat_percent":                       25
+    "power_subsidy_treshold_ex_vat":     0.875 / (1+(n.vat_percent/100)),
+    "power_subsidy_percent":             90
 }
 %}
 
-{# _ _ _ Some power subsidies on national level: #}
-{% set p = {
-    "power_subsidy_treshold_ex_vat": 0.875 / (1+(n.vat_percent/100)),
-    "power_subsidy_percent": 90
-}
-%}
-
-{# _ _ _ then Pr transport-company-settings settings: #}
-{% set linja = {
+{# _ _ Norway transport-company-settings settings: #}
+{% set n_linja = {
     "transport_day":    ( 0.4542 - n.elavgift_incl_vat - n.enova_incl_vat)/(100+n.vat_percent)*100,
     "transport_night":  ( 0.3667 - n.elavgift_incl_vat - n.enova_incl_vat)/(100+n.vat_percent)*100,
     "hour_start_night": 22,
@@ -22,7 +19,7 @@
   }
 %}
 
-
+{# _ _ _ Then the actual macro with it's inputs: #}
 {% macro SpotTest(curr_hour, curr_month, broker_fee_43, current_price, price_in_cents, output) %}
 
 {# _ _ _ Set price in cents and cent multiplier: #}
@@ -36,10 +33,10 @@
 
 {# _ _ _ Calculate net power subsidy: #}
 {% set power_subsidy_41 = 0 %}
-{% if current_price_40 > p.power_subsidy_treshold_ex_vat %}
+{% if current_price_40 > n.power_subsidy_treshold_ex_vat %}
   {% set power_subsidy_41 = 
-         (current_price_40 - p.power_subsidy_treshold_ex_vat ) 
-         * p.power_subsidy_percent/100 %}
+         (current_price_40 - n.power_subsidy_treshold_ex_vat ) 
+         * n.power_subsidy_percent/100 %}
 {%endif%}
 
 
@@ -48,10 +45,10 @@
 
 
 {# _ _ _ Calculate transport cost night/day #}
-{% if curr_hour >= linja.hour_start_night or curr_hour < linja.hour_start_day %}
-  {% set transport_net_44 = linja.transport_night %}
+{% if curr_hour >= n_linja.hour_start_night or curr_hour < n_linja.hour_start_day %}
+  {% set transport_net_44 = n_linja.transport_night %}
 {% else%}
-  {% set transport_net_44 = linja.transport_day %}
+  {% set transport_net_44 = n_linja.transport_day %}
 {% endif %}
 
 
