@@ -12,7 +12,7 @@ By updating the correct data in this repository and updating it through HACS, my
   
 
 # How to use:
-'''
+```
 {% from 'easy_time.jinja' import clock_icon %}
 
 {# Return the current time icon #}
@@ -21,7 +21,7 @@ By updating the correct data in this repository and updating it through HACS, my
 {# Return midnight or noon's current time icon #}
 {{ clock_icon(0) }}
 {{ clock_icon(12) }}
-'''
+```
 
 
 
