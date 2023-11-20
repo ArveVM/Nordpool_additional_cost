@@ -1,4 +1,4 @@
-{# _ _ _ First set some country related settings:  #}
+{# _ _ _ First set some country related settings: #}
 
 {# _ _ Norway: #}
 {% set n = {
@@ -20,7 +20,7 @@
 %}
 
 {# _ _ _ Then the actual macro with it's inputs: #}
-{% macro SpotTest(curr_hour, curr_month, broker_fee_43, current_price, price_in_cents, output) %}
+{% macro add_cost(curr_hour, curr_month, broker_fee_43, current_price, price_in_cents, output) %}
 
 {# _ _ _ Set price in cents and cent multiplier: #}
 {% if price_in_cents == true %}
