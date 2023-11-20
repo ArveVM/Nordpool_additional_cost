@@ -92,7 +92,7 @@ Create a Priceanalyzer or a Nordpool-sensor with the following as additional cos
 {% set curr_hour = now().hour %}
 {% set curr_month = now().month %}
 {% set curr_price = current_price %}
-{% from 'nordpool_additional_cost.jinja' import SpotTest %} 
+{% from 'nordpool_additional_cost.jinja' import add_cost %} 
 {{ add_cost(
     curr_hour,
     curr_month,
@@ -115,7 +115,7 @@ Create a Priceanalyzer or a Nordpool-sensor with the following as additional cos
 {% set curr_hour = now().hour %}
 {% set curr_month = now().month %}
 {% set curr_price = current_price %}
-{% from 'nordpool_additional_cost.jinja' import SpotTest %} 
+{% from 'nordpool_additional_cost.jinja' import add_cost %} 
 {{ add_cost(
     curr_hour,
     curr_month,
