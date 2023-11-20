@@ -181,6 +181,7 @@ template:
 
 
 draft:
+- https://gis3.nve.no/ferdigkart/omraedekonsesjon_a0_2021.pdf
 - https://www.nve.no/reguleringsmyndigheten/kunde/nett/nettleie/
 - https://github.com/martinju/stromstotte/blob/master/data/database_nettleie_simple.csv
 - 
