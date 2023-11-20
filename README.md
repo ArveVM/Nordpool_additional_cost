@@ -7,7 +7,7 @@ Tired of calculating/changing templates for Nordpool-spot price additional cost?
 By updating the correct data in this repository and updating to your HA through HACS, my goal is that we don't have to individually update addtional_cost in our HA-instances -> one should only use HACAS to update to the last version of this template!
 
 ### Inspiration
-Petro31's [easy-time-jinja](https://github.com/Petro31/easy-time-jinja)
+Petro31's [easy-time-jinja](https://github.com/Petro31/easy-time-jinja)  
 Kemon - github-wizardry :)
 
 <br />
@@ -20,6 +20,30 @@ We use this template to gather and create a good template which is updated with:
 - country level fees/subsidies
 - power distributor fees/subsidies
 Then the template provides some inputs (including power-broker-markup), and out you get the full price you have to pay each hour (including next-day price)
+
+## Dictionary:
+- Spot = the actual cost of power,, decided hourly on the Nordpool spot market. Prices provided for this and next day
+- Broker = the company that sell you power. They buy from Nordpool, via hedges/futures, long term contracts or spot, but sell to you on spot + broker_fee
+- broker-fee = the markup your broker takes in addition to the spot price for selling you that actual power 
+- Transport = cost-element for transportation of power to your location. Separate company/billing-features (at least in norway
+- Transport company = areas have different companies delivering power, and each of them have a different price structure. Prices are higly regulated given theyr monopoly-situation, so they have to change their prices according to their cost-base etc etc quite often.
+- Norway State fees = elavgift, enova-avgift, mva
+- Norway power subsidy = governemnt subsidy to private individuals when the spot price is above certain level. Only applicable for an individuals main residence
+
+
+------------------------------
+## `add_cost(curr_hour, curr_month, broker_fee_43, current_price, price_in_cents, output) `
+
+add_cost returns the additional cost given the right requested function. For example, if you request price with broker fee and state fee, select function-X 
+
+Argument | Type | Default | Example | Description
+:-:|:-:|:-:|:-:|---
+curr_hour| ?? | - | `now().hour` | (Required) The hour of when add_cost should be calculated.
+curr_month | ?? | No | `now().month` | (Required) The month of when add_cost should be calculated.
+broker_fee | float | none | `0.029|float/1.25` | (Required) Additional fee for power broker. 
+current_price| string | from nordpool/ priceanalyzer | `curr_price` | (Required) Must be price for your area without VAT.
+price_in_cents| boolean | `False` | `True` | (required) If your `integration` is set up with prices in cents, mark True so the template can calculate right additional cost.
+output | Int | - | `1` | (Required) Selected function to present.
 
 ### Functions
 Selected outputs for additional_cost (adjustment to net-spot (no vat) which will have to be set in nordpool/priceanalyzer
@@ -34,6 +58,28 @@ outputs for test/verification or to use in other sensors/calculations
 32. price for tarnsport, broker and subsidized spot
 
 <br />
+
+### Examples
+Create a Priceanalyzer or a Nordpool-sensor with the following as additional cost
+(select the last variable as the "function" you want to return
+
+```jinja
+
+{% set curr_hour = now().hour %}
+{% set curr_month = now().month %}
+{% set curr_price = current_price %}
+{% from 'nordpool_additional_cost.jinja' import SpotTest %} 
+{{ add_cost(
+    curr_hour,
+    curr_month,
+    0.029|float/1.25,
+    curr_price,
+    true,
+    2
+    )}}
+```
+------------------------
+
 
 # Requirements
 1. Must have Nordpool or Priceanalyzer installed, both use same method of adding additional_cost so they can piggyback on the cost-calculation this template (hopfully) can provide
