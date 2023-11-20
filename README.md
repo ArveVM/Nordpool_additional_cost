@@ -7,6 +7,7 @@ Tired of calculating/changing templates for Nordpool-spot price additional cost?
 By updating the correct data in this repository and updating it through HACS, my goal is that we don't have to individually update addtional_cost in our HA-instances -> one should only use HACAS to update to the last version of this template!
 
 <br />
+
 ## Concept
 Two HA-integrations fetch Nordpool-spot prices; [Nordpool](https://github.com/custom-components/nordpool) and [Priceanalyzer](https://github.com/erlendsellie/priceanalyzer). To that price there come additional costs, which contains many components that constantly seem to change :(
 So when a number of state fees and power subsidy constantly cange, power transport company have night/day tarrifs, and power-broker-company change their markup,, how do you keep the actual total power-cost pr hour in your future planning?
