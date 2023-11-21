@@ -74,6 +74,7 @@ price_in_cents| boolean | `False` | `True` | (required) If your `integration` is
 Functions come in two types; 
 - 'add' is to add the actual calculation as 'additional_cost' in Nordpool-/Priceanalyzer-sensor. Use this also for template sensors or other calculations,, will give the price according to cost the current hour
 - while 'pure' is to use NP/PA to return the price but for specific calculation only - not concidering the price in Nordpool-/Priceanalyzer-sensor for the next day. (use 'pure' in test or buildup of graph showing levels/cost-structure. 
+
 Function | Type | Description
 :-:|:-:|---
 transport_broker_pure | pure | Reduce NP/PA-spot to show only the fulctuations in cost on theese elements
