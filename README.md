@@ -18,8 +18,8 @@ This is a community concept,, under no cercomstanceas can I take responsability 
 <br />
 
 ## Concept
-Two HA-integrations fetch Nordpool-spot prices; [Nordpool](https://github.com/custom-components/nordpool) and [Priceanalyzer](https://github.com/erlendsellie/priceanalyzer). On top of that price there come additional costs, which contains many components that constantly seem to change :(
-So when a number of state fees and power subsidy constantly cange, power transport company have night/day tarrifs that often change, and power-broker-company change their markup,, how do you keep the actual total power-cost pr hour in your future planning?
+Two HA-integrations fetch Nordpool-spot prices ('current_price'); [Nordpool](https://github.com/custom-components/nordpool) and [Priceanalyzer](https://github.com/erlendsellie/priceanalyzer). On top of that 'current_price' there come additional costs, which contains many components that constantly seem to change :(
+So when a number of state fees and power subsidy constantly change, power transport company have night/day tarrifs that often change, and power-broker-company change their markup,, how do you keep the actual total power-cost pr hour in your future planning?
 
 We use this repo to gather and create a good template which is updated with: 
 - country level fees/subsidies
@@ -31,21 +31,23 @@ Then the template provides some inputs (including power-broker-markup), and out 
 ## Dictionary:
 - Spot-price = the actual cost of power,, decided hourly on the Nordpool spot market. Prices provided for this and next day
 - Broker = the company that sell you power. They buy from Nordpool (perhaps via hedges/futures, long term contracts or spot), but sell to you on spot + broker_fee
-- broker-fee = the markup your broker takes in addition to the spot price for selling you that actual power 
+- BrokerFee = the markup your broker takes in addition to the spot price for selling you that actual power 
 - Transport = cost-element for transportation of power to your location. Separate company/billing-features (at least in norway
-- Transport company = areas have different companies delivering power, and each of them have a different price structure. Prices are higly regulated given theyr monopoly-situation, so they have to change their prices according to their cost-base etc etc quite often.
+- Transporter = The company that transport the power to you house. 
 - Norway State fees = elavgift, enova-avgift, mva
-- Norway power subsidy = governemnt subsidy to private individuals when the spot price is above certain level. Only applicable for an individuals main residence
+- Norway subsidy = governemnt subsidy to private individuals when the spot price is above certain level. Only applicable for an individuals main residence
 
 <br />
 
 # Installation
-Install this in HACS or download the nordpool_additional_cost.jinja from this repository and place the files into your config\custom_templates directory.
+- Install this in HACS (you need to manually add this repository,, this is a custom-level HACS-template)
+- or download the nordpool_additional_cost.jinja from this repository and place the files into your config\custom_templates directory.
 
 PS: you need to enable [HACS-experimental](https://experimental.hacs.xyz/docs/faq/experimental_features/) features (to enable downloading templates) and then select "template" when adding repository.
 
 ### Updates 
-
+.. new versions will show up in HA as updates (requirement= HACS-install),, just click update and latest version will be downloaded. 
+Please remember to refresh template after downloading new version !
 
 ### Refresh template: 
 <img width="281" alt="image" src="https://github.com/ArveVM/nordpool_additional_cost/assets/96014323/b0bbcdb9-7168-474c-8682-b1e92863deb5">
@@ -61,14 +63,32 @@ add_cost returns the additional cost given the right requested function. For exa
 
 Argument | Type | Default | Example | Description
 :-:|:-:|:-:|:-:|---
+output | string | none | transport_broker_add | (Required) Selected function to present. See list of functions below.
 curr_hour| ?? | - | `now().hour` | (Required) The hour of when add_cost should be calculated.
 curr_month | ?? | No | `now().month` | (Required) The month of when add_cost should be calculated.
 broker_fee | float | none | `0.029|float/1.25` | (Required) Additional fee for power broker. 
 current_price| string | from nordpool/ priceanalyzer | `curr_price` | (Required) Must be price for your area without VAT.
 price_in_cents| boolean | `False` | `True` | (required) If your `integration` is set up with prices in cents, mark True so the template can calculate right additional cost.
-output | Int | - | `1` | (Required) Selected function to present.
+
+### Functions
+Functions come in two types; 'add' is to add the actual calculation as 'additional_cost' in Nordpool-/Priceanalyzer-sensor, while 'pure' is to return the specific calculation only - not concidering the price in Nordpool-/Priceanalyzer-sensor. (use 'pure' in test or buildup of graph showing levels/cost-structure. 
+Function | Type | Description
+:-:|:-:|---
+transport_broker_pure | Pure_cost | Return only cost for Transport and BrokerFee
+transport_broker_add | Pure_cost | Return Transport and BrokerFee to be added to 'current_price'
 
 <br />
+
+### Transporters
+Transport-companies: Areas have different companies delivering power, and each of them have a different price structure. Prices are higly regulated given theyr monopoly-situation, so they have to change their prices according to their cost-base etc etc quite often.
+This is the list of added 'Transporters', with link to the actual price-book used when adding the price(s). If price is wrong/not updated,, please raise an issue/PR
+Transporter | Description | Pricebook
+:-:|:-:|---
+no_linja_m | Norway Mørenett | [Linja-Mørenett](https://static1.squarespace.com/static/61438478feca7941581468f1/t/64c773640c3b884d34be8a58/1690792804308/Tariffark+1.+juli+2023+-+hushald.pdf)
+
+
+<br />
+
 
 ### Functions
 Selected outputs for additional_cost (adjustment to net-spot (no vat) which will have to be set in nordpool/priceanalyzer
