@@ -9,7 +9,7 @@ By updating the correct data in this repository and updating to your HA through 
 ### Inspiration
 Petro31's [easy-time-jinja](https://github.com/Petro31/easy-time-jinja)  
 Kemon - github-wizardry :)
-
+Erlend Sellie, both for the Priceanalyzer-integration but also a lot of help on templating and structure :)
 <br />
 
 ### Disclaimer
@@ -21,7 +21,7 @@ This is a community concept,, under no cercomstanceas can I take responsability 
 Two HA-integrations fetch Nordpool-spot prices ('current_price'); [Nordpool](https://github.com/custom-components/nordpool) and [Priceanalyzer](https://github.com/erlendsellie/priceanalyzer). On top of that 'current_price' there come additional costs, which contains many components that constantly seem to change :(
 So when a number of state fees and power subsidy constantly change, power transport company have night/day tarrifs that often change, and power-broker-company change their markup,, how do you keep the actual total power-cost pr hour in your future planning?
 
-We use this repo to gather and create a good template which is updated with: 
+We use this repo to gather and create a good re-usable template which is updated with: 
 - country level fees/subsidies
 - power distributor fees/subsidies
 Then the template provides some inputs (including power-broker-markup), and out you get the full price you have to pay each hour (including next-day price)
@@ -71,11 +71,13 @@ current_price| string | from nordpool/ priceanalyzer | `curr_price` | (Required)
 price_in_cents| boolean | `False` | `True` | (required) If your `integration` is set up with prices in cents, mark True so the template can calculate right additional cost.
 
 ### Functions
-Functions come in two types; 'add' is to add the actual calculation as 'additional_cost' in Nordpool-/Priceanalyzer-sensor, while 'pure' is to return the specific calculation only - not concidering the price in Nordpool-/Priceanalyzer-sensor. (use 'pure' in test or buildup of graph showing levels/cost-structure. 
+Functions come in two types; 
+- 'add' is to add the actual calculation as 'additional_cost' in Nordpool-/Priceanalyzer-sensor. Use this also for template sensors or other calculations,, will give the price according to cost the current hour
+- while 'pure' is to use NP/PA to return the price but for specific calculation only - not concidering the price in Nordpool-/Priceanalyzer-sensor for the next day. (use 'pure' in test or buildup of graph showing levels/cost-structure. 
 Function | Type | Description
 :-:|:-:|---
-transport_broker_pure | Pure_cost | Return only cost for Transport and BrokerFee
-transport_broker_add | Pure_cost | Return Transport and BrokerFee to be added to 'current_price'
+transport_broker_pure | pure | Reduce NP/PA-spot to show only the fulctuations in cost on theese elements
+transport_broker_add | add | Return Transport and BrokerFee for given timeslot/hour
 
 <br />
 
@@ -185,8 +187,9 @@ template:
 
 # Requirements
 1. Must have Nordpool or Priceanalyzer installed, both use same method of adding additional_cost so they can piggyback on the cost-calculation this template (hopfully) can provide
-2. HACS to get updates
-3. Community focus on updating
+2. HACS to get updates, set to experimental mode to enable add/download templates
+3. HA-core >= 2023.4 (to enable reusable-templates function released there)
+4. Community focus on updating
    - There are many different countrys with separate cost-structures, and
 
 <br />
@@ -213,3 +216,5 @@ draft:
 - lnett (lyse nett)  https://www.l-nett.no/nettleie/priser-og-vilkar-privat/
 
 - 
+# History:
+2023-08- started working on re-usable templats - which was new functionality from HA 2023.4
