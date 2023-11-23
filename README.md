@@ -48,12 +48,8 @@ PS: you need to enable [HACS-experimental](https://experimental.hacs.xyz/docs/fa
 
 ### Updates 
 .. new versions will show up in HA as updates (requirement= HACS-install),, just click update and latest version will be downloaded. 
-Please remember to refresh template after downloading new version !
+Please remember to refresh template after downloading new version ??  
 <img width="417" alt="image" src="https://github.com/ArveVM/nordpool_additional_cost/assets/96014323/20773a3d-4e97-4f2f-ac67-508323c840f1">
-
-
-### Refresh template: 
-<img width="281" alt="image" src="https://github.com/ArveVM/nordpool_additional_cost/assets/96014323/b0bbcdb9-7168-474c-8682-b1e92863deb5">
 
   
 <br />
@@ -204,11 +200,22 @@ template:
 <br />
 
 
+# FAQ
+Q: Why is a change in the macro/template not updated/refleceted in the dev/tools or sensors? 
+A: Have you remembered to refresh the jinja2-templates?  
+<img width="281" alt="image" src="https://github.com/ArveVM/nordpool_additional_cost/assets/96014323/b0bbcdb9-7168-474c-8682-b1e92863deb5">
+Q: Why is a my supplier not listed ?
+A: All in due time,,, Have you raised an issue with a link to your suppliers name/pricebook?  - or perhaps create a PR with the additional config for your supplier ;)  
+Q: Why is only Norway functioning ?
+A: All in due time,,, Have not got any data on fee-structure for other contries,, Please raise an issue with descriptions  a link to your suppliers name/pricebook?  - or perhaps create a PR with the additional config for your supplier ;)  
+
+
+<br />
+
 # Tested combination of Country/Power-distributor:
 
 see 'Transporters'
 <br />
-
 
 draft:
 - https://gis3.nve.no/ferdigkart/omraedekonsesjon_a0_2021.pdf
@@ -221,3 +228,4 @@ draft:
 
 # History:
 2023-08- started working on re-usable templats - which was new functionality from HA 2023.4
+2023-10 - 
