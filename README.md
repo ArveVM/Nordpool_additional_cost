@@ -49,6 +49,8 @@ PS: you need to enable [HACS-experimental](https://experimental.hacs.xyz/docs/fa
 ### Updates 
 .. new versions will show up in HA as updates (requirement= HACS-install),, just click update and latest version will be downloaded. 
 Please remember to refresh template after downloading new version !
+<img width="417" alt="image" src="https://github.com/ArveVM/nordpool_additional_cost/assets/96014323/20773a3d-4e97-4f2f-ac67-508323c840f1">
+
 
 ### Refresh template: 
 <img width="281" alt="image" src="https://github.com/ArveVM/nordpool_additional_cost/assets/96014323/b0bbcdb9-7168-474c-8682-b1e92863deb5">
