@@ -73,7 +73,7 @@ output_vat| boolean | `False` | `True` | (required) If you want output to be inc
 ```jinja
 {%- set curr_price = current_price %}
 {%- set config = {
-"function"       : "config_verify",
+"function"       : "price_subz_tb_sf_vat_pure",
 "transporter" 	 : "no_linja_m",
 "brokerfee"      : 0.029|float/1.25,
 "timeslot"       : now(),
@@ -82,7 +82,7 @@ output_vat| boolean | `False` | `True` | (required) If you want output to be inc
 "output_vat"     : true
 } -%}
 
-{% from 'nordpool_additional_cost.jinja' import np1 %} 
+{% from 'nordpool_additional_cost.jinja' import nac %} 
 {{ nac(config)}}
 ```
 
