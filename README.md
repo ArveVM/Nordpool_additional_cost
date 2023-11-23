@@ -57,7 +57,7 @@ Please remember to refresh template after downloading new version !
 <br />
 
 # Re-usable Templates:
-## `add_cost(curr_hour, curr_month, broker_fee_43, current_price, price_in_cents, output) `
+## `nac(config) `
 
 add_cost returns the additional cost given the right requested function. For example, if you request price with broker fee and state fee, select function-X 
 
