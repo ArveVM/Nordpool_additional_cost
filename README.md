@@ -84,23 +84,27 @@ output_vat| boolean | `False` | `True` | (required) If you want output to be inc
 "output_vat"     : true
 } -%}
 
-{% from 'nordpool4_additional_cost.jinja' import np1 %} 
-{{ np1(config)}}
+{% from 'nordpool_additional_cost.jinja' import np1 %} 
+{{ nac(config)}}
 ```
 
-### Functions
+### Function
 Functions come in two types; 
 - 'add' is to add the actual calculation as 'additional_cost' in Nordpool-/Priceanalyzer-sensor. Use this also for template sensors or other calculations,, will give the price according to cost the current hour
 - while 'pure' is to use NP/PA to return the price but for specific calculation only - not concidering the price in Nordpool-/Priceanalyzer-sensor for the next day. (use 'pure' in test or buildup of graph showing levels/cost-structure. 
 
 Function | Type | Description
 :-:|:-:|---
-transport_broker_pure | pure | Reduce NP/PA-spot to show only the fulctuations in cost on theese elements
-transport_broker_add | add | Return Transport and BrokerFee for given timeslot/hour
-
+transport | add | Return Transport for given timeslot/hour
+transport_broker | add | Return Transport and BrokerFee for given timeslot/hour
+transport_broker_pure | pure | Reduce NP/PA-spot to show only the fulctuations in cost on transport+broker during the day ahead
+subsidy | add | Return subsidy for given timeslot/hour
+price_subsidized | add | Return subsidized price for given timeslot/hour
+price_subz_tb | add | Return subsidized price with transport and brookerfee for given timeslot/hour
+price_subz_tb_sf_vat_pure | pure | calculate addition to NP/PA-spot to show full electricity-price the day ahead
 <br />
 
-### Transporters
+### Transporter
 Transport-companies: Areas have different companies delivering power, and each of them have a different price structure. Prices are higly regulated given theyr monopoly-situation, so they have to change their prices according to their cost-base etc etc quite often.
 This is the list of added 'Transporters', with link to the actual price-book used when adding the price(s). If price is wrong/not updated,, please raise an issue/PR
 Transporter | Description | Pricebook
@@ -109,36 +113,28 @@ no_linja_m | Norway Mørenett | [Linja-Mørenett](https://static1.squarespace.co
 no_tensio_s | Norway Tensio south | [Tensio-sør](https://ts.tensio.no/kunde/nettleie-priser-og-avtaler)
 no_elvia    | Norway Elvia        | [Elvia](https://www.elvia.no/nettleie/alt-om-nettleiepriser/nettleiepriser-for-privatkunder/)
 
-
 <br />
 
+### Broker_fee
+Add your broker's fee: Add a float representing the markup upon the spot-price you have in your deal with you broker. Ideally this would be a reference to a template sensor/input that you can change outside templates 
 
-
-
-# How to use the template:
-
-Create a Priceanalyzer or a Nordpool-sensor with the new template calculating additional cost
-
-
-### Example for additional cost
-Create a Priceanalyzer or a Nordpool-sensor with the following as additional cost
-(select the last variable as the "function" you want to return
-
-```jinja
-
-{% set curr_hour = now().hour %}
-{% set curr_month = now().month %}
-{% set curr_price = current_price %}
-{% from 'nordpool_additional_cost.jinja' import add_cost %} 
-{{ add_cost(
-    curr_hour,
-    curr_month,
-    0.029|float/1.25,
-    curr_price,
-    true,
-    2
-    )}}
+```yaml
+input_number:
+  # Set value for your power-brokers markup-fee upon Nordpool-spot.
+  # It should be added to a card to be edited from GUI
+  nordpool_additional_cost_broker_fee:
+    name: Nordpool Additional Cost broker_fee
+    initial: 0.0232
+    min: -20
+    max: 35
 ```
+
+then you need to point the main-macro to that sensor 
+```jinja
+"brokerfee"      : states('input_number.nordpool_additional_cost_broker_fee'),
+```
+
+
 
 <br />
 
@@ -149,18 +145,20 @@ Create a Priceanalyzer or a Nordpool-sensor with the following as additional cos
 3. add this code in SDevelopment tools / template, and you will get the return-value of the function you have specified. (select the last variable as the "function" you want to return
 ```
 {% set current_price = (states('sensor.nordpool')|float) %}
-{% set curr_hour = now().hour %}
-{% set curr_month = now().month %}
-{% set curr_price = current_price %}
-{% from 'nordpool_additional_cost.jinja' import add_cost %} 
-{{ add_cost(
-    curr_hour,
-    curr_month,
-    0.029|float/1.25,
-    curr_price,
-    true,
-    2
-    )}}
+{%- set curr_price = current_price %}
+{%- set config = {
+  "function"       : "price_subz_tb_sf_vat_pure",
+  "transporter" 	 : "no_linja_m",
+  "brokerfee"      : states('input_number.nordpool_additional_cost_broker_fee'),
+  "timeslot"       : now(),
+  "timeslot_price" : curr_price,
+  "price_in_cents" : true,
+  "output_vat"     : true
+} -%}
+
+{% from 'nordpool_additional_cost.jinja' import nac %} 
+{{ nac(config)}}
+
 ```
 
 <br />
@@ -176,18 +174,19 @@ template:
       - name: Nordpool Additional Cost
         state: >
           {% set current_price = (states('sensor.nordpool')|float) %}
-          {% set curr_hour = now().hour %}
-          {% set curr_month = now().month %}
-          {% set curr_price = current_price %}
-          {% from 'nordpool_additional_cost.jinja' import add_cost %} 
-          {{ SpotTest(
-              curr_hour,
-              curr_month,
-              0.029|float/1.25,
-              curr_price,
-              true,
-              1
-              )}}
+          {%- set curr_price = current_price %}
+          {%- set config = {
+            "function"       : "price_subz_tb_sf_vat_pure",
+            "transporter" 	 : "no_linja_m",
+            "brokerfee"      : states('input_number.nordpool_additional_cost_broker_fee'),
+            "timeslot"       : now(),
+            "timeslot_price" : curr_price,
+            "price_in_cents" : true,
+            "output_vat"     : true
+          } -%}
+          
+          {% from 'nordpool_additional_cost.jinja' import nac %} 
+          {{ nac(config)}}
 ```
 ------------------------
 
@@ -205,9 +204,7 @@ template:
 
 # Tested combination of Country/Power-distributor:
 
-## Norway
-1. [Linja-Mørenett](https://static1.squarespace.com/static/61438478feca7941581468f1/t/64c773640c3b884d34be8a58/1690792804308/Tariffark+1.+juli+2023+-+hushald.pdf)
-
+see 'Transporters'
 <br />
 
 
@@ -220,6 +217,5 @@ draft:
 - Agder Energi: https://www.aenett.no/nettleie/tariffer/
 - lnett (lyse nett)  https://www.l-nett.no/nettleie/priser-og-vilkar-privat/
 
-- 
 # History:
 2023-08- started working on re-usable templats - which was new functionality from HA 2023.4
