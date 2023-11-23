@@ -8,7 +8,7 @@ By updating the correct data in this repository and updating to your HA through 
 
 ### Inspiration
 Petro31's [easy-time-jinja](https://github.com/Petro31/easy-time-jinja)  
-Kemon - github-wizardry :)
+Kemon - github-wizardry :)  
 Erlend Sellie, both for the Priceanalyzer-integration but also a lot of help on templating and structure :)
 <br />
 
@@ -17,11 +17,11 @@ This is a community concept,, under no cercomstanceas can I take responsability 
 
 <br />
 
-## Concept
+## Concept; add HACS-downloadable re-usable templates/macros
 Two HA-integrations fetch Nordpool-spot prices ('current_price'); [Nordpool](https://github.com/custom-components/nordpool) and [Priceanalyzer](https://github.com/erlendsellie/priceanalyzer). On top of that 'current_price' there come additional costs, which contains many components that constantly seem to change :(
 So when a number of state fees and power subsidy constantly change, power transport company have night/day tarrifs that often change, and power-broker-company change their markup,, how do you keep the actual total power-cost pr hour in your future planning?
 
-We use this repo to gather and create a good re-usable template which is updated with: 
+We use this repo to gather and create good re-usable template(s) which is updated with: 
 - country level fees/subsidies
 - power distributor fees/subsidies
 Then the template provides some inputs (including power-broker-markup), and out you get the full price you have to pay each hour (including next-day price)
@@ -36,6 +36,7 @@ Then the template provides some inputs (including power-broker-markup), and out 
 - Transporter = The company that transport the power to you house. 
 - Norway State fees = elavgift, enova-avgift, mva
 - Norway subsidy = governemnt subsidy to private individuals when the spot price is above certain level. Only applicable for an individuals main residence
+- re-usable template https://www.home-assistant.io/docs/configuration/templating/#reusing-templates
 
 <br />
 
@@ -55,20 +56,37 @@ Please remember to refresh template after downloading new version !
   
 <br />
 
-# Template definition:
-------------------------------
+# Re-usable Templates:
 ## `add_cost(curr_hour, curr_month, broker_fee_43, current_price, price_in_cents, output) `
 
 add_cost returns the additional cost given the right requested function. For example, if you request price with broker fee and state fee, select function-X 
 
 Argument | Type | Default | Example | Description
 :-:|:-:|:-:|:-:|---
-output | string | none | transport_broker_add | (Required) Selected function to present. See list of functions below.
-curr_hour| ?? | - | `now().hour` | (Required) The hour of when add_cost should be calculated.
-curr_month | ?? | No | `now().month` | (Required) The month of when add_cost should be calculated.
+function     | string | none | transport_broker_add | (Required) Selected function to present. See list of functions below.
+transporter  | ?? | - | `no_linja_m` | (Required) Select transporter for transport-cost. Aee list of functions below.
 broker_fee | float | none | `0.029|float/1.25` | (Required) Additional fee for power broker. 
-current_price| string | from nordpool/ priceanalyzer | `curr_price` | (Required) Must be price for your area without VAT.
+timeslot   | datetime | none | `now().hour` | (Required) The hour of when add_cost should be calculated.
+timeslot_price | string | from nordpool/ priceanalyzer | `curr_price` | (Required) Must be price for your area without VAT.
 price_in_cents| boolean | `False` | `True` | (required) If your `integration` is set up with prices in cents, mark True so the template can calculate right additional cost.
+output_vat| boolean | `False` | `True` | (required) If you want output to be including VAT, set true. 
+
+### Examples
+```jinja
+{%- set curr_price = current_price %}
+{%- set config = {
+"function"       : "config_verify",
+"transporter" 	 : "no_linja_m",
+"brokerfee"      : 0.029|float/1.25,
+"timeslot"       : now(),
+"timeslot_price" : curr_price,
+"price_in_cents" : true,
+"output_vat"     : true
+} -%}
+
+{% from 'nordpool4_additional_cost.jinja' import np1 %} 
+{{ np1(config)}}
+```
 
 ### Functions
 Functions come in two types; 
@@ -88,24 +106,13 @@ This is the list of added 'Transporters', with link to the actual price-book use
 Transporter | Description | Pricebook
 :-:|:-:|---
 no_linja_m | Norway Mørenett | [Linja-Mørenett](https://static1.squarespace.com/static/61438478feca7941581468f1/t/64c773640c3b884d34be8a58/1690792804308/Tariffark+1.+juli+2023+-+hushald.pdf)
+no_tensio_s | Norway Tensio south | [Tensio-sør](https://ts.tensio.no/kunde/nettleie-priser-og-avtaler)
+no_elvia    | Norway Elvia        | [Elvia](https://www.elvia.no/nettleie/alt-om-nettleiepriser/nettleiepriser-for-privatkunder/)
 
 
 <br />
 
 
-### Functions
-Selected outputs for additional_cost (adjustment to net-spot (no vat) which will have to be set in nordpool/priceanalyzer
-1. price for transport and broker
-2. price for tarnsport, broker and subsidized spot (net)
-3. price for transport, broker and subsidized spot including state fees
-
-outputs for test/verification or to use in other sensors/calculations
-11. state fees
-
-31. transport and broker
-32. price for tarnsport, broker and subsidized spot
-
-<br />
 
 
 # How to use the template:
@@ -208,11 +215,8 @@ draft:
 - https://gis3.nve.no/ferdigkart/omraedekonsesjon_a0_2021.pdf
 - https://www.nve.no/reguleringsmyndigheten/kunde/nett/nettleie/
 - https://github.com/martinju/stromstotte/blob/master/data/database_nettleie_simple.csv
-- 
 - https://github.com/erlendsellie/priceanalyzer/wiki/Additional-Costs
 - tensio-Nord: https://tn.tensio.no/nettleie-og-tilknytningsavtaler
-- Tensio-sør: https://ts.tensio.no/kunde/nettleie-priser-og-avtaler
-- Elvia helg/kveld vs dag: https://www.elvia.no/nettleie/alt-om-nettleiepriser/nettleiepriser-for-privatkunder/
 - Agder Energi: https://www.aenett.no/nettleie/tariffer/
 - lnett (lyse nett)  https://www.l-nett.no/nettleie/priser-og-vilkar-privat/
 
